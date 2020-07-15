@@ -1,0 +1,42 @@
+version: "3"
+services:
+  control_node:
+    build: control_node/
+    container_name: "control_node"
+    volumes:
+      - "./control_node/ansible:/etc/ansible"
+      - "./control_node/ssh:/root/.ssh"
+    networks:
+      ansible_network:
+        ipv4_address: 172.30.1.1
+  node1:
+    build: managed_node/
+    container_name: "node1"
+    
+    networks:
+      ansible_network:
+        ipv4_address: 172.30.1.2
+      
+  node2:
+    build: managed_node/
+    container_name: "node2"
+    
+    networks:
+      ansible_network:
+        ipv4_address: 172.30.1.3
+      
+  node3:
+    build: managed_node/
+    container_name: "node3"
+    
+    networks:
+      ansible_network:
+        ipv4_address: 172.30.1.4
+      
+networks:
+  ansible_network:
+      driver: bridge
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.30.0.0/16
